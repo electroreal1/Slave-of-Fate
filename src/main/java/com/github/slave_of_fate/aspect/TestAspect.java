@@ -3,7 +3,6 @@ package com.github.slave_of_fate.aspect;
 import com.github.slave_of_fate.aspect.registries.Aspect;
 import com.github.slave_of_fate.aspect.registries.AspectRank;
 import com.github.slave_of_fate.capabilities.PlayerSoul;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
 public class TestAspect extends Aspect {
@@ -13,12 +12,12 @@ public class TestAspect extends Aspect {
 
     @Override
     public void triggerDormant(Player player, PlayerSoul soul) {
-        player.displayClientMessage(Component.nullToEmpty("Cooked"), true);
+
     }
 
     @Override
     public void triggerAwakened(Player player, PlayerSoul soul) {
-
+        return;
     }
 
     @Override
