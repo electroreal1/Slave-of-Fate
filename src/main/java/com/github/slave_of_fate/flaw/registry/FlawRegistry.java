@@ -1,6 +1,7 @@
-package com.github.slave_of_fate.flaw;
+package com.github.slave_of_fate.flaw.registry;
 
 import com.github.slave_of_fate.SlaveOfFate;
+import com.github.slave_of_fate.flaw.FairWeatherFlaw;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;

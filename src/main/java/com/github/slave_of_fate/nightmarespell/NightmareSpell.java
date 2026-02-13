@@ -84,7 +84,6 @@ public class NightmareSpell {
     public static void promotePlayer(ServerPlayer player, Results results) {
         PlayerSoul soul = player.getData(SlaveOfFateAttachments.SOUL_DATA);
 
-        // Update Rank to Awakened (since they finished a nightmare)
         soul.setRank(SoulRank.AWAKENED);
         soul.setAspectId(results.aspectId());
         soul.setFlawId(results.flawId());
@@ -124,7 +123,7 @@ public class NightmareSpell {
     }
 
     public static void startFirstNightmare(ServerPlayer player) {
-        queueMessage(player, "Prepare for your nightmare, Sleeper " + player.getName().getString());
+        queueMessage(player, "Prepare for your nightmare, Dreamer " + player.getName().getString());
     }
 
     public static void onNightmareDeath(ServerPlayer player) {

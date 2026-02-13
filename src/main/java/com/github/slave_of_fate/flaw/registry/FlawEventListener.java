@@ -1,4 +1,4 @@
-package com.github.slave_of_fate.flaw;
+package com.github.slave_of_fate.flaw.registry;
 
 import com.github.slave_of_fate.capabilities.PlayerSoul;
 import com.github.slave_of_fate.capabilities.SoulRank;
