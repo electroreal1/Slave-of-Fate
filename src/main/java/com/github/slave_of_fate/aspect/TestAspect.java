@@ -17,7 +17,7 @@ public class TestAspect extends Aspect {
 
     @Override
     public void triggerAwakened(Player player, PlayerSoul soul) {
-
+        return;
     }
 
     @Override
