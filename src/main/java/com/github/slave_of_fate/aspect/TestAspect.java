@@ -18,7 +18,13 @@ public class TestAspect extends Aspect {
 
     @Override
     public void triggerAwakened(Player player, PlayerSoul soul) {
-        return;
+        var TrueName = soul.getTrueName();
+        if (TrueName == null) {
+            soul.setTrueName("BambaNugat");
+            player.displayClientMessage(Component.nullToEmpty("Gay"), true);
+        } else {
+            player.displayClientMessage(Component.nullToEmpty("No homo"), true);
+        }
     }
 
     @Override

@@ -1,13 +1,5 @@
 {
-  "itemGroup.slave_of_fate": "Example Mod Tab",
-  "block.slave_of_fate.example_block": "Example Block",
-  "item.slave_of_fate.example_item": "Example Item",
-
-  "slave_of_fate.configuration.title": "Slave of Shadows Configs",
-  "slave_of_fate.configuration.section.slave_of_fate.common.toml": "Slave of Shadows Configs",
-  "slave_of_fate.configuration.section.slave_of_fate.common.toml.title": "Slave of Shadows Configs",
-  "slave_of_fate.configuration.items": "Item List",
-  "slave_of_fate.configuration.logDirtBlock": "Log Dirt Block",
-  "slave_of_fate.configuration.magicNumberIntroduction": "Magic Number Text",
-  "slave_of_fate.configuration.magicNumber": "Magic Number"
+"key.catagories.slave_of_fate": "Slave of Fate",
+  "key.slave_of_fate.use_awakened": "Use Awakened Ability",
+  "key.slave_of_fate.use_dormant": "Use Dormant Ability"
 }

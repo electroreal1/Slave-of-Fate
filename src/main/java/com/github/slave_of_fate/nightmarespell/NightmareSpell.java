@@ -99,10 +99,11 @@ public class NightmareSpell {
     }
 
     private static String generateTrueName() {
-        String[] prefix = {"Lost", "Shadow", "Sunless", "Stared", "Pale"};
-        String[] suffix = {"Light", "King", "Traveler", "Slave", "Prince"};
+        String[] prefix = {"Lost", "Shadow", "Sunless", "Stared", "Pale", "Blind", " "};
+        String[] suffix = {"Light", "King", "Traveler", "Slave", "Prince", "Lord", "Trash", "Idiot", "From", " "};
+        String[] threefix = {"Light", "King", "Traveler", "Slave", "Prince", "Lord", "Trash", "Idiot", " "};
         java.util.Random rand = new java.util.Random();
-        return prefix[rand.nextInt(prefix.length)] + " " + suffix[rand.nextInt(suffix.length)];
+        return prefix[rand.nextInt(prefix.length)] + " " + suffix[rand.nextInt(suffix.length)] + " " + threefix[rand.nextInt(threefix.length)];
     }
 
     public static boolean commandByTrueName(ServerPlayer caster, ServerPlayer target, String spokenName) {
