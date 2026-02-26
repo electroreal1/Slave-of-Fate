@@ -13,17 +13,17 @@ public class TestAspect extends Aspect {
 
     @Override
     public void triggerDormant(Player player, PlayerSoul soul) {
-        player.displayClientMessage(Component.nullToEmpty("Cooked"), true);
+        player.displayClientMessage(Component.nullToEmpty(""), true);
     }
 
     @Override
     public void triggerAwakened(Player player, PlayerSoul soul) {
         var TrueName = soul.getTrueName();
         if (TrueName == null) {
-            soul.setTrueName("BambaNugat");
-            player.displayClientMessage(Component.nullToEmpty("Gay"), true);
+            soul.setTrueName("");
+            player.displayClientMessage(Component.nullToEmpty(""), true);
         } else {
-            player.displayClientMessage(Component.nullToEmpty("No homo"), true);
+            player.displayClientMessage(Component.nullToEmpty("No "), true);
         }
     }
 

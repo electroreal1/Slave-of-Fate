@@ -98,4 +98,16 @@ public class PlayerSoul {
     public void setRank(SoulRank rank) {
         this.rank = rank;
     }
+
+    public void setCoreCount(int coreCount) {
+        this.coreCount = coreCount;
+    }
+
+    public void setEssence(int essence) {
+        this.essence = essence;
+    }
+
+    public void setMaxEssence(int maxEssence) {
+        this.maxEssence = maxEssence;
+    }
 }

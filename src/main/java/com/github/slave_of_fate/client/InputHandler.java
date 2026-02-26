@@ -18,8 +18,10 @@ public class InputHandler {
             PacketDistributor.sendToServer(new AbilityPayload(0));
         }
         if (SlaveOfFateKeybinds.USE_AWAKENED.consumeClick()) {
-            // Send packet to server for Awakened ability
             PacketDistributor.sendToServer(new AbilityPayload(1));
+        }
+        if (SlaveOfFateKeybinds.USE_ASCENDED.consumeClick()) {
+            PacketDistributor.sendToServer(new AbilityPayload(2));
         }
     }
 }

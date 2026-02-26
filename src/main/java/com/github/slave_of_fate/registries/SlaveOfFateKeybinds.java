@@ -23,4 +23,12 @@ public class SlaveOfFateKeybinds {
             GLFW.GLFW_KEY_B,
             CATEGORY
     );
+
+    public static final KeyMapping USE_ASCENDED = new KeyMapping(
+            "key.slave_of_fate.use_ascended",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_H,
+            CATEGORY
+    );
 }
