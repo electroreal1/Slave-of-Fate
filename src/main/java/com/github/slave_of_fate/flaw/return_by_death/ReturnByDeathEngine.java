@@ -203,7 +203,7 @@ public class ReturnByDeathEngine {
         final ServerLevel finalLevel = targetLevel;
 
         new HashMap<>(blockHistory).forEach((pos, state) -> {
-            finalLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.DRAGON_BREATH,
+            finalLevel.sendParticles(ParticleTypes.DRAGON_BREATH,
                     pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
                     5, 0.2, 0.2, 0.2, 0.02);
             finalLevel.setBlock(pos, state, 3);
