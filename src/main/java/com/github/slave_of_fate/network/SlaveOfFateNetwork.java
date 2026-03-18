@@ -17,7 +17,7 @@ public class SlaveOfFateNetwork {
         final PayloadRegistrar registrar = event.registrar("1");
 
         registrar.playToServer(AbilityPayload.TYPE, AbilityPayload.STREAM_CODEC, AbilityPayload::handleData);
-        registrar.playToServer(BlackoutPayload.TYPE, BlackoutPayload.STREAM_CODEC, BlackoutPayload::handleData);
+        registrar.playToClient(BlackoutPayload.TYPE, BlackoutPayload.STREAM_CODEC, BlackoutPayload::handleData);
         registrar.playToServer(CheckStatsPayload.TYPE, CheckStatsPayload.STREAM_CODEC, CheckStatsPayload::handleData);
     }
 }
