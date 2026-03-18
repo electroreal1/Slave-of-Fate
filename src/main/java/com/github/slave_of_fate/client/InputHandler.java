@@ -1,6 +1,7 @@
 package com.github.slave_of_fate.client;
 
-import com.github.slave_of_fate.network.AbilityPayload;
+import com.github.slave_of_fate.network.payload.AbilityPayload;
+import com.github.slave_of_fate.network.payload.CheckStatsPayload;
 import com.github.slave_of_fate.registries.SlaveOfFateKeybinds;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -13,6 +14,10 @@ public class InputHandler {
 
     @SubscribeEvent
     public static void onKeyInput(InputEvent.Key event) {
+        if (SlaveOfFateKeybinds.SHOW_RUNES.consumeClick()) {
+            PacketDistributor.sendToServer(new CheckStatsPayload());
+        }
+
         if (SlaveOfFateKeybinds.USE_DORMANT.consumeClick()) {
             // Send packet to server for Dormant ability
             PacketDistributor.sendToServer(new AbilityPayload(0));
@@ -23,5 +28,6 @@ public class InputHandler {
         if (SlaveOfFateKeybinds.USE_ASCENDED.consumeClick()) {
             PacketDistributor.sendToServer(new AbilityPayload(2));
         }
+
     }
 }

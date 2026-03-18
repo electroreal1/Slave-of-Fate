@@ -1,4 +1,4 @@
-package com.github.slave_of_fate.network;
+package com.github.slave_of_fate.network.payload;
 
 import com.github.slave_of_fate.capabilities.PlayerSoul;
 import com.github.slave_of_fate.registries.SlaveOfFateAttachments;

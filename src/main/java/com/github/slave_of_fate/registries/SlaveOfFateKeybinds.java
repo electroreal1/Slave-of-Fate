@@ -8,6 +8,14 @@ import org.lwjgl.glfw.GLFW;
 public class SlaveOfFateKeybinds {
     public static final String CATEGORY = "key.categories.slave_of_fate";
 
+    public static final KeyMapping SHOW_RUNES = new KeyMapping(
+            "key.slave_of_fate.show_runes",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_H,
+            CATEGORY
+    );
+
     public static final KeyMapping USE_DORMANT = new KeyMapping(
             "key.slave_of_fate.use_dormant",
             KeyConflictContext.IN_GAME,
@@ -31,4 +39,5 @@ public class SlaveOfFateKeybinds {
             GLFW.GLFW_KEY_H,
             CATEGORY
     );
+
 }

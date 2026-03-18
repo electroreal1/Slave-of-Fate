@@ -2,6 +2,7 @@ package com.github.slave_of_fate.flaw.registry;
 
 import com.github.slave_of_fate.SlaveOfFate;
 import com.github.slave_of_fate.flaw.FairWeatherFlaw;
+import com.github.slave_of_fate.flaw.return_by_death.ReturnByDeathFlaw;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -21,4 +22,7 @@ public class FlawRegistry {
 
     public static final DeferredHolder<Flaw, FairWeatherFlaw> FAIR_WEATHER =
             FlawRegistry.FLAWS.register("fair_weather", () -> new FairWeatherFlaw("Fair Weather"));
+
+    public static final DeferredHolder<Flaw, ReturnByDeathFlaw> RETURN_BY_DEATH =
+            FlawRegistry.FLAWS.register("return_by_death", () -> new ReturnByDeathFlaw("Return By Death"));
 }

@@ -6,12 +6,19 @@ import com.github.slave_of_fate.capabilities.SoulRank;
 import com.github.slave_of_fate.registries.SlaveOfFateAttachments;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 import java.util.*;
+
+import static com.github.slave_of_fate.aspect.registries.AspectRank.TRANSCENDENT;
+import static net.minecraft.network.chat.HoverEvent.Action.SHOW_TEXT;
 
 public class NightmareSpell {
     private static final Map<UUID, Queue<String>> MESSAGE_QUEUES = new HashMap<>();
@@ -69,7 +76,7 @@ public class NightmareSpell {
             rank = AspectRank.SUPREME;
         } else if (score >= 70) {
             assessment = "Heroic";
-            rank = AspectRank.TRANSCENDENT;
+            rank = TRANSCENDENT;
         } else {
             assessment = "Decent";
             rank = AspectRank.AWAKENED;
@@ -79,6 +86,21 @@ public class NightmareSpell {
         ResourceLocation flawId = pickRandomFlaw();
 
         return new Results(assessment, rank, aspectId, flawId);
+    }
+
+    @SubscribeEvent
+    public static void onPlayerJoinWorld(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity().getName().getString().equals("Dev")) {
+
+            if (event.getEntity() instanceof ServerPlayer player) {
+
+                PlayerSoul soul = player.getData(SlaveOfFateAttachments.SOUL_DATA);
+
+                soul.setFlawId(ResourceLocation.parse("slave_of_fate:return_by_death"));
+
+                System.out.println("Dev login detected: Assigned Return by Death flaw.");
+            }
+        }
     }
 
     public static void promotePlayer(ServerPlayer player, Results results) {
@@ -148,5 +170,101 @@ public class NightmareSpell {
         queueMessage(player, "Flaw: [" + flawDisplay + "].");
 
         promotePlayer(player, results);
+    }
+
+    public static void sendRuneStats(ServerPlayer player) {
+        PlayerSoul soul = player.getData(SlaveOfFateAttachments.SOUL_DATA);
+        ResourceLocation rawFlaw = soul.getFlawId();
+        ResourceLocation rawAspect = soul.getAspectId();
+        String formattedFlaw = formatFlawName(rawFlaw);
+        String formattedAspect = formantAspectName(rawAspect);
+        SoulRank soulRank = soul.getRank();
+
+        String topBorder    = "᚛─────────────── ◈ ───────────────᚜";
+        String bottomBorder = "᚛─────────────────────────────────᚜";
+
+        ChatFormatting primary = ChatFormatting.GOLD;
+        ChatFormatting secondary = ChatFormatting.DARK_PURPLE;
+        ChatFormatting valueColor = ChatFormatting.AQUA;
+
+        MutableComponent message = Component.literal("\n" + topBorder + "\n").withStyle(secondary);
+
+        message.append(Component.literal("        STATUS: ").withStyle(primary).withStyle(ChatFormatting.BOLD));
+        message.append(player.getName().copy().withStyle(ChatFormatting.WHITE)).append("\n\n");
+
+        addStatLine(message, " ❤ Health", String.format("%.1f/%.1f", player.getHealth(), player.getMaxHealth()), ChatFormatting.RED, valueColor);
+        addStatLine(message, " ❂ Hunger", String.valueOf(player.getFoodData().getFoodLevel()), ChatFormatting.GOLD, valueColor);
+        addStatLine(message, " ✨ Soul Essence", String.valueOf(soul.getEssence()), ChatFormatting.GREEN, valueColor);
+        addStatLine(message, " " + getRankIcon(soulRank) + " Soul Rank:", String.valueOf(soul.getRank()), ChatFormatting.GREEN, valueColor);
+
+        message.append(Component.literal("    [!] Flaw: ").withStyle(ChatFormatting.GOLD))
+                .append(Component.literal(formattedFlaw).withStyle(style -> style
+                        .withColor(ChatFormatting.DARK_RED)
+                        .withItalic(true)
+                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal("The burden bound to your soul.")))
+                )).append("\n");
+
+        message.append(Component.literal("    [*] Aspect: ").withStyle(ChatFormatting.GOLD))
+                .append(Component.literal(formattedAspect).withStyle(ChatFormatting.AQUA).withStyle(ChatFormatting.ITALIC))
+                .append("\n");
+        message.append(Component.literal("\n" + bottomBorder).withStyle(secondary));
+
+        player.sendSystemMessage(message);
+    }
+
+    private static void addStatLine(MutableComponent msg, String label, String value, ChatFormatting labelCol, ChatFormatting valCol) {
+        msg.append(Component.literal("  " + label + ": ").withStyle(labelCol))
+                .append(Component.literal(value).withStyle(valCol))
+                .append("\n");
+    }
+
+    private static String getRankIcon(SoulRank rank) {
+        return switch (rank) {
+            case DORMANT -> "🕯️";
+            case AWAKENED -> "✨";
+            case ASCENDED -> "✵";
+            case TRANSCENDED -> "𖤓";
+            default -> "⚪";
+        };
+    }
+
+    public static String formatFlawName(ResourceLocation flawId) {
+        if (flawId == null) return "None";
+
+        String path = flawId.getPath();
+
+        String spaced = path.replace("_", " ");
+
+
+        StringBuilder result = new StringBuilder();
+        for (String word : spaced.split(" ")) {
+            if (!word.isEmpty()) {
+                result.append(Character.toUpperCase(word.charAt(0)))
+                        .append(word.substring(1))
+                        .append(" ");
+            }
+        }
+
+        return result.toString().trim();
+    }
+
+    public static String formantAspectName(ResourceLocation aspectId) {
+        if (aspectId == null) return "None";
+
+        String path = aspectId.getPath();
+
+        String spaced = path.replace("_", " ");
+
+
+        StringBuilder result = new StringBuilder();
+        for (String word : spaced.split(" ")) {
+            if (!word.isEmpty()) {
+                result.append(Character.toUpperCase(word.charAt(0)))
+                        .append(word.substring(1))
+                        .append(" ");
+            }
+        }
+
+        return result.toString().trim();
     }
 }

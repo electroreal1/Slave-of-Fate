@@ -2,6 +2,7 @@ package com.github.slave_of_fate.flaw.registry;
 
 import com.github.slave_of_fate.capabilities.PlayerSoul;
 import com.github.slave_of_fate.capabilities.SoulRank;
+import com.github.slave_of_fate.flaw.return_by_death.ReturnByDeathEngine;
 import com.github.slave_of_fate.registries.SlaveOfFateAttachments;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -19,6 +20,11 @@ public class FlawEventListener {
             if (soul.getRank().getIndex() >= SoulRank.DORMANT.getIndex()) {
                 // Look up the Flaw from a Map/Registry using soul.getAspectId()
                 // and call flaw.tick(player, soul);
+                if (soul.getFlawId().equals("return_by_death")) {
+                    if (player.level().getDayTime() % 24000 == 0) {
+                        ReturnByDeathEngine.setCheckpoint(player);
+                    }
+                }
             }
         }
     }
