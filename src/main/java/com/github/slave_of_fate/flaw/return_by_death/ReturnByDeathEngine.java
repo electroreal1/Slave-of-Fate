@@ -6,6 +6,7 @@ import com.github.slave_of_fate.registries.SlaveOfFateAttachments;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -20,18 +21,15 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
@@ -41,7 +39,6 @@ import net.neoforged.neoforge.event.level.ExplosionEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.*;
-import java.util.function.Function;
 
 @EventBusSubscriber(modid = "slave_of_fate")
 public class ReturnByDeathEngine {
@@ -184,7 +181,7 @@ public class ReturnByDeathEngine {
 
 
     public static void performReturn(ServerPlayer player) {
-        net.minecraft.server.MinecraftServer server = player.getServer();
+        MinecraftServer server = player.getServer();
         if (server == null || savedDimension == null) return;
 
         ServerLevel targetLevel = server.getLevel(savedDimension);
@@ -210,7 +207,7 @@ public class ReturnByDeathEngine {
         });
 
         new HashMap<>(containerHistory).forEach((pos, nbt) -> {
-            net.minecraft.world.level.block.entity.BlockEntity be = finalLevel.getBlockEntity(pos);
+            BlockEntity be = finalLevel.getBlockEntity(pos);
             if (be != null) {
                 be.loadWithComponents(nbt, finalLevel.registryAccess());
                 be.setChanged();
@@ -222,13 +219,7 @@ public class ReturnByDeathEngine {
 
         if (player.level().dimension() != savedDimension) {
             ServerPlayer teleportedPlayer = (ServerPlayer) player.changeDimension(new net.minecraft.world.level.portal.DimensionTransition(
-                    targetLevel,
-                    new net.minecraft.world.phys.Vec3(savedX, savedY, savedZ),
-                    net.minecraft.world.phys.Vec3.ZERO,
-                    savedYaw,
-                    savedPitch,
-                    net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING
-            ));
+                    targetLevel, new Vec3(savedX, savedY, savedZ), Vec3.ZERO, savedYaw, savedPitch, DimensionTransition.DO_NOTHING));
 
             if (teleportedPlayer != null) {
                 applyStatsAndInventory(teleportedPlayer);
@@ -247,8 +238,8 @@ public class ReturnByDeathEngine {
         ReturnByDeathData.get(finalLevel).hasCheckpoint = false;
         ReturnByDeathData.get(finalLevel).setDirty();
 
-        player.displayClientMessage(net.minecraft.network.chat.Component.literal("Return by Death: Loop " + (++loopCount))
-                .withStyle(net.minecraft.ChatFormatting.DARK_PURPLE), true);
+        player.displayClientMessage(Component.literal("Return by Death: Loop " + (++loopCount))
+                .withStyle(ChatFormatting.DARK_PURPLE), true);
     }
 
     private static void applyStatsAndInventory(ServerPlayer player) {
@@ -290,7 +281,7 @@ public class ReturnByDeathEngine {
             if (isValidEnvironment(player)) {
                 event.setCanceled(true);
                 player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(),
-                        net.minecraft.sounds.SoundEvents.WITHER_SPAWN, net.minecraft.sounds.SoundSource.PLAYERS, 1.0f, 0.5f);
+                        SoundEvents.WITHER_SPAWN, SoundSource.PLAYERS, 1.0f, 0.5f);
                 performReturn(player);
             }
         }
@@ -336,7 +327,7 @@ public class ReturnByDeathEngine {
         for (int i = 0; i < blocks.size(); i++) {
             CompoundTag entry = blocks.getCompound(i);
             BlockPos pos = BlockPos.of(entry.getLong("pos"));
-            BlockState state = net.minecraft.nbt.NbtUtils.readBlockState(overworld.holderLookup(net.minecraft.core.registries.Registries.BLOCK), entry.getCompound("state"));
+            BlockState state = net.minecraft.nbt.NbtUtils.readBlockState(overworld.holderLookup(Registries.BLOCK), entry.getCompound("state"));
             blockHistory.put(pos, state);
         }
 
